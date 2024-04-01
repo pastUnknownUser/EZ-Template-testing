@@ -1,1 +1,1 @@
-Hello
+EZ-Template
