@@ -83,7 +83,8 @@ bin/main.cpp.o: src/main.cpp include/main.h include/api.h \
  include/okapi/api/units/QAngle.hpp include/okapi/api/units/RQuantity.hpp \
  include/okapi/api/units/QLength.hpp include/okapi/api/units/QTime.hpp \
  include/EZ-Template/piston.hpp include/EZ-Template/sdcard.hpp \
- include/autons.hpp
+ include/autons.hpp include/globals.h include/pros/misc.hpp \
+ include/pros/motors.hpp
 include/main.h:
 include/api.h:
 include/pros/adi.h:
@@ -252,3 +253,6 @@ include/okapi/api/units/QTime.hpp:
 include/EZ-Template/piston.hpp:
 include/EZ-Template/sdcard.hpp:
 include/autons.hpp:
+include/globals.h:
+include/pros/misc.hpp:
+include/pros/motors.hpp:
