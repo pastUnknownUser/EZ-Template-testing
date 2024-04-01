@@ -1,4 +1,9 @@
+#include "autons.hpp"
+#include "EZ-Template/drive/drive.hpp"
+#include "EZ-Template/util.hpp"
 #include "main.h"
+#include "globals.h"
+#include "pros/rtos.hpp"
 
 /////
 // For installation, upgrading, documentations and tutorials, check out our website!
@@ -6,9 +11,9 @@
 /////
 
 // These are out of 127
-const int DRIVE_SPEED = 110;  
-const int TURN_SPEED = 90;
-const int SWING_SPEED = 90;
+int DRIVE_SPEED = 110;  
+int TURN_SPEED = 90;
+int SWING_SPEED = 90;
 
 ///
 // Constants
@@ -19,32 +24,181 @@ void default_constants() {
   chassis.pid_turn_constants_set(3, 0, 20);
   chassis.pid_swing_constants_set(5, 0, 30);
 
-  chassis.pid_turn_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 750_ms, 750_ms);
-  chassis.pid_swing_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 750_ms, 750_ms);
-  chassis.pid_drive_exit_condition_set(300_ms, 1_in, 500_ms, 3_in, 750_ms, 750_ms);
+  chassis.pid_turn_exit_condition_set(300_ms, 3_deg, 175_ms, 7_deg, 750_ms, 750_ms);
+  chassis.pid_swing_exit_condition_set(300_ms, 3_deg, 175_ms, 7_deg, 750_ms, 750_ms);
+  chassis.pid_drive_exit_condition_set(300_ms, 1_in, 175_ms, 3_in, 750_ms, 750_ms);
 
   chassis.slew_drive_constants_set(7_in, 80);
 }
 
 
-///
-// Drive Example
-///
-void drive_example() {
-  // The first parameter is target inches
-  // The second parameter is max speed the robot will drive at
-  // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
-  // for slew, only enable it when the drive distance is greater then the slew distance + a few inches
 
-  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+void closeWP() {
+  DRIVE_SPEED = 127;
+  TURN_SPEED = 50;
+  chassis.pid_drive_set(-40_in, DRIVE_SPEED, false);
   chassis.pid_wait();
-
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED);
+  /*chassis.pid_turn_set(20_deg, TURN_SPEED, true);
   chassis.pid_wait();
-
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED);
+  chassis.pid_drive_set(16_in, DRIVE_SPEED, true);
   chassis.pid_wait();
+  chassis.pid_turn_set(-25_deg, TURN_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(3_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  backWings.set_value(true);
+  chassis.pid_drive_set(16_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-68_deg, TURN_SPEED, true);
+  chassis.pid_wait();
+  backWings.set_value(false);
+  intakeRelease.set_value(true);
+  pros::delay(200);
+  Intake.move_voltage(-12000); 
+  chassis.pid_drive_set(37_in, DRIVE_SPEED, true); 
+  chassis.pid_wait();*/
 }
+
+void closeRush() {
+  DRIVE_SPEED = 127;
+  TURN_SPEED = 127;
+  intakeRelease.set_value(true);
+  frontWings.set_value(true);
+  pros::delay(200);
+  Intake.move_voltage(12000);
+  frontWings.set_value(false);
+  chassis.pid_drive_set(48_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  pros::delay(400);
+  frontWings.set_value(1);
+  chassis.pid_turn_set(76_deg, TURN_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(21_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  pros::delay(100);
+  frontWings.set_value(false);
+  chassis.pid_drive_set(-21_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(0_deg, TURN_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-38.5_in, DRIVE_SPEED,true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(74_deg, TURN_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-18_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(119_deg, TURN_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(10_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  backWings.set_value(true);
+  chassis.pid_drive_set(21_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(74_deg, TURN_SPEED, true);
+  chassis.pid_wait();
+  backWings.set_value(false);
+  chassis.pid_drive_set(27_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  Intake.move_voltage(-12000);
+
+}
+
+
+void farSideRush() {
+  DRIVE_SPEED = 127;
+  TURN_SPEED = 127;
+  Intake.move_voltage(12000);
+  frontWings.set_value(true);
+  pros::delay(100);
+  frontWings.set_value(false);
+  intakeRelease.set_value(true);
+  chassis.pid_drive_set(57_in, DRIVE_SPEED);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-52.5, 127, false);
+  chassis.pid_wait();
+  backWings.set_value(true);
+  chassis.pid_drive_set(-31_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(10_in, DRIVE_SPEED, false);
+  backWings.set_value(false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-230, TURN_SPEED, false);
+  chassis.pid_wait();
+  Intake.move_voltage(-12000);
+  chassis.pid_drive_set(12_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-21_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-110.59, TURN_SPEED, false);
+  chassis.pid_wait();
+  Intake.move_voltage(12000);
+  chassis.pid_drive_set(15_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-10 , TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-49_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(75 , TURN_SPEED, false);
+  chassis.pid_wait();
+  backWings.set_value(true);
+  chassis.pid_drive_set(18_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-10 , TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(50 , TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-5_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  Intake.move_voltage(-12000);
+  backWings.set_value(false);
+  chassis.pid_drive_set(23_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-6_in, DRIVE_SPEED, false);
+  chassis.pid_wait();
+
+}
+
+void farSideWP() {
+
+
+}
+
+void farSide6Ball() {
+  DRIVE_SPEED = 127;
+  TURN_SPEED = 127;
+  intakeRelease.set_value(true);
+  Intake.move_voltage(12000);
+  chassis.pid_drive_set(3_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-32_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-43 , TURN_SPEED, true);
+  chassis.pid_wait();
+  backWings.set_value(true);
+  chassis.pid_drive_set(-15_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-75 , TURN_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  backWings.set_value(false);
+  chassis.pid_drive_set(23_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(105 , TURN_SPEED, true);
+  chassis.pid_wait();
+  Intake.move_voltage(-12000);
+  chassis.pid_drive_set(23_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-15_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(40 , TURN_SPEED, true);
+  chassis.pid_wait();
+  Intake.move_voltage(12000);
+  chassis.pid_drive_set(57_in, DRIVE_SPEED);
+  chassis.pid_wait();
+
+}
+
 
 ///
 // Turn Example

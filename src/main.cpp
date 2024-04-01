@@ -1,4 +1,9 @@
 #include "main.h"
+#include "autons.hpp"
+#include "pros/misc.h"
+#include "pros/misc.hpp"
+#include "pros/motors.hpp"
+#include "pros/rotation.h"
 
 /////
 // For installation, upgrading, documentations and tutorials, check out our website!
@@ -10,14 +15,14 @@
 ez::Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is used as the sensor
-  {1, 2, 3}
+  {-13, -14, -15}
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is used as the sensor
-  ,{-4, -5, -6}
+  ,{9, 12, 19}
 
   // IMU Port
-  ,7
+  ,2
 
   // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
   ,3.25
@@ -58,13 +63,13 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    Auton("Example Drive\n\nDrive forward and come back.", drive_example),
-    Auton("Example Turn\n\nTurn 3 times.", turn_example),
-    Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
-    Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
-    Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
-    Auton("Combine all 3 movements", combining_movements),
-    Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
+    Auton("Close Rush", closeRush),
+    Auton("Close Win Point", closeWP),
+    Auton("Far Win Point", farSideWP),
+    Auton("Far Rush", farSideRush),
+    Auton("Far side complete with 6 ball", farSide6Ball),
+    //Auton("Combine all 3 movements", combining_movements),
+    //Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
   });
 
   // Initialize chassis and auton selector
@@ -136,6 +141,11 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+int FrontWingsToggle = 1;
+int BackWingsToggle = 1;
+int CataToggle = 1;
+
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
@@ -153,7 +163,7 @@ void opcontrol() {
         chassis.pid_tuner_toggle();
         
       // Trigger the selected autonomous routine
-      if (master.get_digital_new_press(DIGITAL_B)) 
+      if (master.get_digital_new_press(DIGITAL_A)) 
         autonomous();
 
       chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
@@ -168,6 +178,78 @@ void opcontrol() {
     // . . .
     // Put more user control code here!
     // . . .
+
+    if (master.get_digital_new_press(DIGITAL_B)) {
+      CataToggle++;
+
+      if (CataToggle % 2 == 0) {
+        Cata.move_voltage(-12000);
+
+      }
+
+      if (CataToggle % 2 == 1) {
+        Cata.move_voltage(0);
+      }
+
+    }
+
+    if (master.get_digital(DIGITAL_L1)) {
+      Intake.move_voltage(12000);
+
+    } else if (master.get_digital(DIGITAL_L2)) {
+      Intake.move_voltage(-12000);
+
+    } else {
+      Intake.move_voltage(0);
+    }
+
+    if (master.get_digital_new_press(DIGITAL_R1)) {
+      FrontWingsToggle++;
+
+      if (FrontWingsToggle % 2 == 0) {
+        frontWings.set_value(false);
+
+      }
+
+      if (FrontWingsToggle % 2 == 1) {
+        frontWings.set_value(true);
+        
+      }
+
+    }
+
+    if (master.get_digital_new_press(DIGITAL_R2)) {
+      BackWingsToggle++;
+
+      if (BackWingsToggle % 2 == 0) {
+        backWings.set_value(false);
+
+      }
+
+      if (BackWingsToggle % 2 == 1) {
+        backWings.set_value(true);
+      }
+
+    }
+
+    if (master.get_digital(DIGITAL_DOWN)) {
+      Lift.set_value(true);
+
+    }
+
+    if (master.get_digital(DIGITAL_RIGHT)) {
+      Lift.set_value(false);
+
+    }
+
+    if (master.get_digital(DIGITAL_Y)) {
+      intakeRelease.set_value(true);
+
+    } else {
+      intakeRelease.set_value(0);
+    }
+
+    
 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
