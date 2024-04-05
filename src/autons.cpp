@@ -36,9 +36,30 @@ void default_constants() {
 void closeWP() {
   DRIVE_SPEED = 127;
   TURN_SPEED = 50;
-  chassis.pid_drive_set(-40_in, DRIVE_SPEED, false);
+  chassis.pid_drive_set(20, 62, false);
+  
+  /*
+  chassis.pid_drive_set(59, 62, false);
   chassis.pid_wait();
-  /*chassis.pid_turn_set(20_deg, TURN_SPEED, true);
+  chassis.pid_turn_set(-90, TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(40, 62, false);
+  chassis.pid_wait();
+  Intake.move_voltage(6000); 
+  chassis.pid_wait();
+  pros::delay(2000);
+  chassis.pid_drive_set(-40, 62, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-180, TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(50, 62, false);
+  chassis.pid_wait();
+  Intake.move_voltage(-6000);
+  chassis.pid_wait();
+  pros::delay(2000);
+  Intake.move_voltage(0);
+
+  chassis.pid_turn_set(20_deg, TURN_SPEED, true);
   chassis.pid_wait();
   chassis.pid_drive_set(16_in, DRIVE_SPEED, true);
   chassis.pid_wait();
@@ -57,50 +78,55 @@ void closeWP() {
   Intake.move_voltage(-12000); 
   chassis.pid_drive_set(37_in, DRIVE_SPEED, true); 
   chassis.pid_wait();*/
+  
 }
 
 void closeRush() {
   DRIVE_SPEED = 127;
   TURN_SPEED = 127;
-  intakeRelease.set_value(true);
-  frontWings.set_value(true);
-  pros::delay(200);
-  Intake.move_voltage(12000);
-  frontWings.set_value(false);
-  chassis.pid_drive_set(48_in, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  pros::delay(400);
-  frontWings.set_value(1);
-  chassis.pid_turn_set(76_deg, TURN_SPEED, true);
-  chassis.pid_wait();
-  chassis.pid_drive_set(21_in, DRIVE_SPEED, false);
-  chassis.pid_wait();
-  pros::delay(100);
-  frontWings.set_value(false);
-  chassis.pid_drive_set(-21_in, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  chassis.pid_turn_set(0_deg, TURN_SPEED, true);
-  chassis.pid_wait();
-  chassis.pid_drive_set(-38.5_in, DRIVE_SPEED,true);
-  chassis.pid_wait();
-  chassis.pid_turn_set(74_deg, TURN_SPEED, true);
-  chassis.pid_wait();
-  chassis.pid_drive_set(-18_in, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  chassis.pid_turn_set(119_deg, TURN_SPEED, true);
-  chassis.pid_wait();
-  chassis.pid_drive_set(10_in, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  backWings.set_value(true);
-  chassis.pid_drive_set(21_in, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  chassis.pid_turn_set(74_deg, TURN_SPEED, true);
-  chassis.pid_wait();
-  backWings.set_value(false);
-  chassis.pid_drive_set(27_in, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  Intake.move_voltage(-12000);
+  
 
+  /*
+  chassis.pid_drive_set(38, 62, false);
+  chassis.pid_wait();
+  Intake.move_voltage(10000);
+  pros::delay(2000);
+  chassis.pid_drive_set(-20, 62, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(90, TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(68, 62, false);
+  chassis.pid_wait();
+  Intake.move_voltage(-10000);
+  pros::delay(2000);
+  Intake.move_voltage(0);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-75, 62, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(0, TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(18, 62, false);
+  chassis.pid_wait();
+  Intake.move_voltage(10000);
+  pros::delay(2000);
+  chassis.pid_drive_set(-18, 62, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(90, TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(68, 62, false);
+  chassis.pid_wait();
+  Intake.move_voltage(-10000);
+  pros::delay(2000);
+  Intake.move_voltage(0);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-82, 62, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set(0, TURN_SPEED, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-20, 62, false);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-20, 62, false);
+  */
 }
 
 

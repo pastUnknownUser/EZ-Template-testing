@@ -63,8 +63,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    Auton("Close Rush", closeRush),
     Auton("Close Win Point", closeWP),
+    Auton("Close Rush", closeRush),
     Auton("Far Win Point", farSideWP),
     Auton("Far Rush", farSideRush),
     Auton("Far side complete with 6 ball", farSide6Ball),
