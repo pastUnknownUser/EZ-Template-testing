@@ -37,6 +37,7 @@ void closeWP() {
   DRIVE_SPEED = 127;
   TURN_SPEED = 50;
   chassis.pid_drive_set(20, 62, false);
+  chassis.pid_wait();
   
   /*
   chassis.pid_drive_set(59, 62, false);
