@@ -31,6 +31,22 @@ void default_constants() {
   chassis.slew_drive_constants_set(7_in, 80);
 }
 
+void FWD(int distance, bool slew) {
+  chassis.pid_drive_set(distance, DRIVE_SPEED, slew);
+  chassis.pid_wait();
+
+}
+
+void REV(int distance, bool slew) {
+  chassis.pid_drive_set(-distance, DRIVE_SPEED, slew);
+  chassis.pid_wait();
+}
+
+void TURN(int degrees, bool slew) {
+  chassis.pid_turn_set(degrees, TURN_SPEED, slew);
+  chassis.pid_wait();
+}
+
 
 
 void closeWP() {
